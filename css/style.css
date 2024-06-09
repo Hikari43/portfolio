@@ -151,8 +151,8 @@ h3{
     font-size: medium;
 }
 
-@media screen and (max-width:480px) {
-    h1{font-size: large;}
+@media screen and (max-width:549px) {
     h1{font-size: medium;}
-    h1{font-size: small;}
+    h2{font-size: small;}
+    h3{font-size: x-small;}
 }
