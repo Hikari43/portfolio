@@ -107,6 +107,10 @@ body{
     }
 }
 
+#content ul{
+    padding-left: 1em;
+}
+
 #content li{
     list-style: '- ';
 }
