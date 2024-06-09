@@ -7,18 +7,7 @@ const logo = function(p){
     let draw_count;
     let interval;
     let canvas;
-
-    p.windowResized = function(){
-        if(p.windowWidth < 550){
-            p.resizeCanvas(135, 135);
-            canvas.style('margin',  '3%');
-        }
-        else{
-            p.resizeCanvas(200, 200);
-            canvas.style('margin',  '1.5%');
-        }
-    }
-
+    
     p.setup = function(){
         if(p.windowWidth < 550){
             canvas = p.createCanvas(135, 135);
@@ -97,6 +86,16 @@ const logo = function(p){
             emp_i = traj_vecs[0][1];
             emp_j = traj_vecs[0][0];
             traj_vecs.shift();
+        }
+    }
+    p.windowResized = function(){
+        if(p.windowWidth < 550){
+            p.resizeCanvas(135, 135);
+            canvas.style('margin',  '3%');
+        }
+        else{
+            p.resizeCanvas(200, 200);
+            canvas.style('margin',  '1.5%');
         }
     }
     function get_trajectory(n_rows, n_cols, s_x ,s_y){
