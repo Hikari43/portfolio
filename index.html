@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta http-equiv="Cache-Control" content="no-store">
         <link href=”https://use.fontawesome.com/releases/v6.5.2/css/all.css” rel=”stylesheet”>
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/all.min.css">
-        <meta http-equiv="Cache-Control" content="no-store">
         <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
         <script src="jquery_load.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
-        <script src="random_walk.js"></script>
-        <script src="logo.js"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         
@@ -24,7 +22,6 @@
         <!-- OGPの設定 -->
         <meta property="og:type" content="website"/>
         <meta property="og:title" content="Hikari Otsuka" />
-<!--         <meta property="og:description" content="(3)ページ説明文" /> -->
         <meta property="og:url" content="https://hikari43.github.io/portfolio/" />
         <meta property="og:site_name" content="Hikari Otsuka" />
         <meta property="og:image" content="./thumbnail.png" />
@@ -34,10 +31,12 @@
     </head>
     <body>
         <div id="background_container"></div>
+        <script src="random_walk.js"></script>
         <div class="sidebar">
             <nav>
                 <ul>
                     <div id="logo_container"></div>
+                    <script src="logo.js"></script>
                     <li><a id="init_content" href="profile">Profile</a></li>
                     <li><a href="works">Works</a></li>
                     <li><a href="contact">Contact</a></li>
@@ -47,6 +46,6 @@
         <div id="content-container">
             <div id="content"></div>
         </div>
-        <script src="scroller.js"></script>
+        <!-- <script src="scroller.js"></script> -->
     </body>
 </html>

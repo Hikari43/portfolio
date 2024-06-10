@@ -9,7 +9,8 @@ const logo = function(p){
     let canvas;
     
     p.setup = function(){
-        if(p.windowWidth < 550){
+        // console.log('setup', window.innerWidth);
+        if(window.innerWidth < 550){
             canvas = p.createCanvas(125, 125);
             canvas.style('margin',  '3%');
         }
@@ -89,8 +90,9 @@ const logo = function(p){
         }
     }
     p.windowResized = function(){
+        // console.log('resized', window.innerWidth);
         if(canvas != undefined){
-            if(p.windowWidth < 550){
+            if(window.innerWidth < 550){
                 p.resizeCanvas(125, 125);
                 canvas.style('margin',  '3%');
             }

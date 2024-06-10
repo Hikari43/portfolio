@@ -12,7 +12,7 @@ const random_walk = function(p){
     let height_bias;
 
     p.setup = function(){
-        canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+        canvas = p.createCanvas(window.innerWidth, window.innerHeight);
         canvas.position(0, 0);
         canvas.style('z-index','-1');
         directions = [
@@ -35,7 +35,7 @@ const random_walk = function(p){
         alpha_hist  = [];
         alpha_decay = 5;
         width_factor  = 0.5;
-        if(p.windowWidth < 550){
+        if(window.innerWidth < 550){
             width_factor = 0.35;
         }
         s_x = p.width * width_factor  / 2;
@@ -92,10 +92,10 @@ const random_walk = function(p){
     }
 
     p.windowResized = function(){
-        p.resizeCanvas(p.windowWidth, p.windowHeight);
+        p.resizeCanvas(window.innerWidth, window.innerHeight);
         line_length = Math.min(p.width, p.height) * line_length_factor;
         height_bias = p.height * 0.25;
-        if(p.windowWidth < 550){
+        if(window.innerWidth < 550){
             width_factor = 0.35;
         }
         else{
