@@ -58,7 +58,7 @@ body{
     /* overflow: hidden; */
     overflow-y: scroll;
     position: relative;
-    padding-bottom: 50px; /* コンテンツの下端とスクロールバーとの隙間を確保 */
+    /* padding-bottom: 50px;  */
     scrollbar-width: none; /* Firefox 用 */
     -ms-overflow-style: none; /* IE 10+ 用 */
 }
