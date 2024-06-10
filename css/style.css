@@ -58,6 +58,8 @@ body{
     /* overflow: hidden; */
     overflow-y: scroll;
     position: relative;
+    scrollbar-width: none; /* Firefox 用 */
+    -ms-overflow-style: none; /* IE 10+ 用 */
 }
 
 #content{
@@ -83,12 +85,11 @@ body{
     position: relative;
     /* overflow-y: auto;  */
     box-sizing: border-box; /* パディングを含む全体の高さを調整 */
-    scrollbar-width: none; /* Firefox 用 */
-    -ms-overflow-style: none; /* IE 10+ 用 */
+    
     padding-bottom: 50px; /* コンテンツの下端とスクロールバーとの隙間を確保 */
 }
 
-#content::-webkit-scrollbar {
+#content-container::-webkit-scrollbar {
     display: none; /* Webkit系ブラウザ用 */
 }
 
