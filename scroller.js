@@ -39,13 +39,10 @@ contentWrapper.addEventListener('touchmove', function(event) {
 
 contentWrapper.addEventListener('touchend', function(event) {
     isScrolling = false;
-    console.log('Start');
     requestAnimationFrame(inertiaScroll);
 }, { passive: true });
 
 function inertiaScroll() {
-    console.log('isScrolling', isScrolling);
-    console.log('velocityY', velocityY);
     if (!isScrolling && Math.abs(velocityY) > 0.01) {
         content.scrollTop += velocityY * 20; // 速度に応じてスクロール
         velocityY *= 0.95; // 摩擦による減速
