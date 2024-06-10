@@ -1,6 +1,5 @@
 jQuery(function() {
     // 初期ロード
-    jQuery("#content").load("contents/contact.html");
     jQuery("#content").load("contents/profile.html");
     jQuery("#init_content").addClass('active');
     // リンククリック時の動作を定義
