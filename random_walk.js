@@ -35,6 +35,9 @@ const random_walk = function(p){
         alpha_hist  = [];
         alpha_decay = 5;
         width_factor  = 0.5;
+        if(p.windowWidth < 550){
+            width_factor = 0.35;
+        }
         s_x = p.width * width_factor  / 2;
         s_y = (p.height - height_bias) / 2 + height_bias;
         bg_color    = p.color('#159B8B');
@@ -92,6 +95,12 @@ const random_walk = function(p){
         p.resizeCanvas(p.windowWidth, p.windowHeight);
         line_length = Math.min(p.width, p.height) * line_length_factor;
         height_bias = p.height * 0.25;
+        if(p.windowWidth < 550){
+            width_factor = 0.35;
+        }
+        else{
+            width_factor = 0.5;
+        }
     }
 }
 
