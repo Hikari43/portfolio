@@ -38,9 +38,17 @@ body{
     color: #FFFFFF;
 }
 
-.sidebar ul li a:hover{
+@media (hover: hover) {
+/* hover指定できるPCを想定したスタイル */
+    .sidebar ul li a:hover{
     color: #67aaa2;
+    }
 }
+@media (hover: none) {
+/* hoverが使えないタッチ端末を想定した装飾 */
+}
+
+
 
 #content-container{
     flex-grow: 1;
