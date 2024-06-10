@@ -3,6 +3,7 @@ const content = document.getElementById('content');
 
 contentWrapper.addEventListener('wheel', function(event) {
     content.scrollTop += event.deltaY;
+    event.preventDefault();
 });
 
 let startY;
