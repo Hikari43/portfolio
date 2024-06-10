@@ -10,7 +10,7 @@ const logo = function(p){
     
     p.setup = function(){
         if(p.windowWidth < 550){
-            canvas = p.createCanvas(135, 135);
+            canvas = p.createCanvas(125, 125);
             canvas.style('margin',  '3%');
         }
         else{
@@ -89,14 +89,17 @@ const logo = function(p){
         }
     }
     p.windowResized = function(){
-        if(p.windowWidth < 550){
-            p.resizeCanvas(135, 135);
-            canvas.style('margin',  '3%');
+        if(canvas != undefined){
+            if(p.windowWidth < 550){
+                p.resizeCanvas(125, 125);
+                canvas.style('margin',  '3%');
+            }
+            else{
+                p.resizeCanvas(200, 200);
+                canvas.style('margin',  '1.5%');
+            }
         }
-        else{
-            p.resizeCanvas(200, 200);
-            canvas.style('margin',  '1.5%');
-        }
+
     }
     function get_trajectory(n_rows, n_cols, s_x ,s_y){
         const directions = [

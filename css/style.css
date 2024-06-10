@@ -44,9 +44,9 @@ body{
     color: #67aaa2;
     }
 }
-@media (hover: none) {
 /* hoverが使えないタッチ端末を想定した装飾 */
-}
+/* @media (hover: none) {
+} */
 
 
 
@@ -62,7 +62,7 @@ body{
     margin-right: 6%;
     margin-left: auto;
     max-width: 600px;
-    width: 50%;
+    width: 53%;
     display: block;
     text-align: justify;
     /* overflow-y: auto; */
@@ -70,7 +70,7 @@ body{
     -moz-hyphens: auto; /* Firefox 用 */
     -ms-hyphens: auto; /* Internet Explorer 用 */
     hyphens: auto; /* 標準 */
-    word-break: break-word; /* 長い単語の折り返し */
+    word-break: break-all; /* 長い単語の折り返し */
     font-family: "Raleway", sans-serif;
     font-optical-sizing: auto;
     font-weight: 250;
@@ -124,17 +124,20 @@ body{
 }
 
 #content a{
-    text-decoration: none;
+    /* text-decoration: none; */
     transition: 0.3s;
 }
 
-#content a:link, a:visited, a:active{
+#content a:link, #content a:visited, #content a:active{
     color: #FFFFFF;
 }
 
-#content a:hover{
-    color: #67aaa2;
-}
+@media (hover: hover) {
+    /* hover指定できるPCを想定したスタイル */
+        #content a:hover{
+            color: #67aaa2;
+        }
+    }
 
 h1{
     text-decoration: none;
@@ -158,9 +161,16 @@ h3{
     text-decoration: none;
     font-family: "Raleway", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 150;
+    font-weight: 250;
     font-style: normal;
     font-size: medium;
+}
+
+#mail{
+    -webkit-user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+    user-select: all;
 }
 
 @media screen and (max-width:549px) {
