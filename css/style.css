@@ -1,13 +1,13 @@
 html{
     overflow: hidden;
-    /* overscroll-behavior: none; */
+    overscroll-behavior: none;
 }
 
 body{
     /* background-color: #159B8B; */
     background-color: #D3D3D3;
     /* overflow: hidden; */
-    /* overscroll-behavior: none; */
+    overscroll-behavior: none;
     animation: fadeIn 2s forwards;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -108,11 +108,11 @@ body{
     background-color: #e2e2e2;
     position: absolute;
     top: -2px;
-    right: -10px;
+    right: -20px;
     margin-right: 6%;
     margin-left: auto;
-    max-width: 620px;
-    width: calc(53% + 20px);
+    max-width: 630px;
+    width: calc(53% + 30px);
     height: calc(100dvh - 171px); 
     height: calc(100vh - 171px); 
     display: block;
