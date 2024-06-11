@@ -14,18 +14,18 @@ const random_walk = function(p){
     p.setup = function(){
         canvas = p.createCanvas(window.innerWidth, window.innerHeight);
         canvas.position(0, 0);
-        canvas.style('z-index','-1');
+        canvas.style('z-index','-2');
         directions = [
             [ 1,  0],
             [ 0,  1],
             [-1,  0],
             [ 0, -1]
         ];
-        line_length_factor = 0.03
+        line_length_factor = 0.02
         line_length = Math.min(p.width, p.height) * line_length_factor;
         height_bias = p.height * 0.25;
         console.assert(height_bias > 1);
-        line_weight = 0.4;
+        line_weight = 0.3;
         draw_count  = 0;
         interval    = 1.;
         dx          = 0;
@@ -36,16 +36,18 @@ const random_walk = function(p){
         alpha_decay = 5;
         width_factor  = 0.5;
         if(window.innerWidth < 550){
-            width_factor = 0.35;
+            width_factor = 0.4;
         }
         s_x = p.width * width_factor  / 2;
         s_y = (p.height - height_bias) / 2 + height_bias;
-        bg_color    = p.color('#159B8B');
-        line_color  = p.color('#FFFFFF');
+        // bg_color    = p.color('#159B8B');
+        line_color  = p.color('#696969');
     }
 
     p.draw = function(){
-        p.background(bg_color);
+        // p.background(bg_color);
+        p.background(0, 0);
+        p.clear();
         let direction_ind = Math.floor(Math.random() * 4);
 
         if(draw_count % interval == 0){
@@ -96,7 +98,7 @@ const random_walk = function(p){
         line_length = Math.min(p.width, p.height) * line_length_factor;
         height_bias = p.height * 0.25;
         if(window.innerWidth < 550){
-            width_factor = 0.35;
+            width_factor = 0.4;
         }
         else{
             width_factor = 0.5;

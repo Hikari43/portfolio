@@ -8,6 +8,20 @@ const logo = function(p){
     let interval;
     let canvas;
     
+    p.windowResized = function(){
+        // console.log('resized', window.innerWidth);
+        if(canvas != undefined){
+            if(window.innerWidth < 550){
+                p.resizeCanvas(125, 125);
+                canvas.style('margin',  '3%');
+            }
+            else{
+                p.resizeCanvas(200, 200);
+                canvas.style('margin',  '1.5%');
+            }
+        }
+    }
+
     p.setup = function(){
         // console.log('setup', window.innerWidth);
         if(window.innerWidth < 550){
@@ -49,11 +63,11 @@ const logo = function(p){
         textsize = Math.min(p.width, p.height) * 0.15;
         p.background(0,0);
         p.clear();
-        p.stroke(p.color('#FFFFFF'));
+        p.stroke(p.color('#000000'));
         p.noFill();
         p.strokeWeight(2);
         // p.rect(0, 0, p.width, p.height);
-        p.fill(p.color('#FFFFFF'));
+        p.fill(p.color('#000000'));
         p.textSize(textsize);
         p.strokeWeight(0);
         if(traj_vecs.length == 0){
@@ -89,20 +103,8 @@ const logo = function(p){
             traj_vecs.shift();
         }
     }
-    p.windowResized = function(){
-        // console.log('resized', window.innerWidth);
-        if(canvas != undefined){
-            if(window.innerWidth < 550){
-                p.resizeCanvas(125, 125);
-                canvas.style('margin',  '3%');
-            }
-            else{
-                p.resizeCanvas(200, 200);
-                canvas.style('margin',  '1.5%');
-            }
-        }
 
-    }
+
     function get_trajectory(n_rows, n_cols, s_x ,s_y){
         const directions = [
             [ 1,  0],
