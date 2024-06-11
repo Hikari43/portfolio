@@ -172,4 +172,4 @@ const logo = function(p){
 
 }
 
-new p5(logo, "logo_container");
+new p5(logo, "logo-container");
