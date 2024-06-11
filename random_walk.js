@@ -106,4 +106,4 @@ const random_walk = function(p){
     }
 }
 
-new p5(random_walk, "background_container");
+new p5(random_walk, "random_walk");
