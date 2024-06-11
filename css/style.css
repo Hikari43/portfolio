@@ -1,12 +1,12 @@
 html{
     overflow: hidden;
-    overscroll-behavior: none;
+    /* overscroll-behavior: none; */
 }
 
 body{
     background-color: #159B8B;
     overflow: hidden;
-    overscroll-behavior: none;
+    /* overscroll-behavior: none; */
     animation: fadeIn 2s forwards;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -57,6 +57,7 @@ body{
 #content-container{
     flex-grow: 1;
     margin-top: 50px;
+    height: calc(100dvh - 150px); 
     height: calc(100vh - 150px); 
     /* overflow: hidden; */
     overflow-y: scroll;

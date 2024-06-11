@@ -1,73 +1,80 @@
-const contentWrapper = document.getElementById('content-container');
-const content = document.getElementById('content');
-
-contentWrapper.addEventListener('wheel', function(event) {
-    content.scrollTop += event.deltaY;
-    event.preventDefault();
+//高さ計算
+$(document).ready(function () {
+    hsize = $(window).height();
+    console.log(hsize);
+    $("#content-container").css("height", hsize);
 });
 
-let startY;
-let startTime;
-let lastMoveY;
-let lastMoveTime;
-let velocityY = 0;
-let isScrolling = false;
+// const contentWrapper = document.getElementById('content-container');
+// const content = document.getElementById('content');
 
-contentWrapper.addEventListener('touchstart', function(event) {
-    startY = event.touches[0].pageY;
-    startTime = Date.now();
-    lastMoveY = startY;
-    lastMoveTime = startTime;
-    isScrolling = true;
-    velocityY = 0;
-}, { passive: true });
+// contentWrapper.addEventListener('wheel', function(event) {
+//     content.scrollTop += event.deltaY;
+//     event.preventDefault();
+// });
 
-contentWrapper.addEventListener('touchmove', function(event) {
-    const currentY = event.touches[0].pageY;
-    const currentTime = Date.now();
-    const deltaY = startY - currentY;
+// let startY;
+// let startTime;
+// let lastMoveY;
+// let lastMoveTime;
+// let velocityY = 0;
+// let isScrolling = false;
 
-    content.scrollTop += deltaY;
+// contentWrapper.addEventListener('touchstart', function(event) {
+//     startY = event.touches[0].pageY;
+//     startTime = Date.now();
+//     lastMoveY = startY;
+//     lastMoveTime = startTime;
+//     isScrolling = true;
+//     velocityY = 0;
+// }, { passive: true });
 
-    // 速度の計算
-    velocityY = (lastMoveY - currentY) / (currentTime - lastMoveTime);
+// contentWrapper.addEventListener('touchmove', function(event) {
+//     const currentY = event.touches[0].pageY;
+//     const currentTime = Date.now();
+//     const deltaY = startY - currentY;
 
-    lastMoveY = currentY;
-    lastMoveTime = currentTime;
+//     content.scrollTop += deltaY;
 
-    startY = currentY; // 現在の位置を新しい開始位置として更新
-}, { passive: true });
+//     // 速度の計算
+//     velocityY = (lastMoveY - currentY) / (currentTime - lastMoveTime);
 
-contentWrapper.addEventListener('touchend', function(event) {
-    isScrolling = false;
-    requestAnimationFrame(inertiaScroll);
-}, { passive: true });
+//     lastMoveY = currentY;
+//     lastMoveTime = currentTime;
 
-function inertiaScroll() {
-    if (!isScrolling && Math.abs(velocityY) > 0.01) {
-        content.scrollTop += velocityY * 20; // 速度に応じてスクロール
-        velocityY *= 0.95; // 摩擦による減速
+//     startY = currentY; // 現在の位置を新しい開始位置として更新
+// }, { passive: true });
 
-        requestAnimationFrame(inertiaScroll);
-    }
-}
+// contentWrapper.addEventListener('touchend', function(event) {
+//     isScrolling = false;
+//     requestAnimationFrame(inertiaScroll);
+// }, { passive: true });
+
+// function inertiaScroll() {
+//     if (!isScrolling && Math.abs(velocityY) > 0.01) {
+//         content.scrollTop += velocityY * 20; // 速度に応じてスクロール
+//         velocityY *= 0.95; // 摩擦による減速
+
+//         requestAnimationFrame(inertiaScroll);
+//     }
+// }
 
 
-document.addEventListener('touchmove', function(event) {
-    event.preventDefault();
-}, { passive: false });
+// document.addEventListener('touchmove', function(event) {
+//     event.preventDefault();
+// }, { passive: false });
 
-content.addEventListener('touchmove', function(event) {
-    event.stopPropagation();
-}, { passive: false });
+// content.addEventListener('touchmove', function(event) {
+//     event.stopPropagation();
+// }, { passive: false });
 
-content.addEventListener('touchstart', function(event) {
-    const startY = event.touches[0].pageY;
-    const startScrollTop = content.scrollTop;
+// content.addEventListener('touchstart', function(event) {
+//     const startY = event.touches[0].pageY;
+//     const startScrollTop = content.scrollTop;
 
-    content.addEventListener('touchmove', function(event) {
-        const currentY = event.touches[0].pageY;
-        const deltaY = startY - currentY;
-        content.scrollTop = startScrollTop + deltaY;
-    }, { passive: false });
-}, { passive: false });
+//     content.addEventListener('touchmove', function(event) {
+//         const currentY = event.touches[0].pageY;
+//         const deltaY = startY - currentY;
+//         content.scrollTop = startScrollTop + deltaY;
+//     }, { passive: false });
+// }, { passive: false });
