@@ -57,10 +57,11 @@ body{
 #content-container{
     flex-grow: 1;
     margin-top: 50px;
+    height: calc(100vh - 150px); 
     /* overflow: hidden; */
     overflow-y: scroll;
     position: relative;
-    /* padding-bottom: 50px;  */
+    margin-bottom: 50px; 
     scrollbar-width: none; /* Firefox 用 */
     -ms-overflow-style: none; /* IE 10+ 用 */
 }
@@ -75,7 +76,6 @@ body{
     margin-left: auto;
     max-width: 600px;
     width: 53%;
-    height: calc(100vh - 150px); 
     display: block;
     text-align: justify;
     /* overflow-y: auto; */
