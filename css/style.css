@@ -1,10 +1,12 @@
 html{
-    overflow: 'hidden';
+    overflow: hidden;
+    overscroll-behavior: none;
 }
 
 body{
     background-color: #159B8B;
     overflow: hidden;
+    overscroll-behavior: none;
     animation: fadeIn 2s forwards;
     -webkit-user-select: none;
     -moz-user-select: none;

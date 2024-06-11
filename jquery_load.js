@@ -23,13 +23,16 @@ jQuery(function() {
 
         jQuery('#content').addClass('slide-out-right');
 
-        setTimeout(function(){
+        setTimeout(
+            function(){
             jQuery('#content').removeClass('slide-out-right').empty();
-            jQuery("#content").load(newContentUrl, function(){
-                $("#content").addClass("fade-in");
-            });}, 250);
-        $("#content").on("animationend", function() {
-            $(this).removeClass("fade-in");
+            jQuery("#content").load(newContentUrl, 
+                function(){$("#content").addClass("fade-in");});
+            }, 
+            200
+        );
+        jQuery("#content").on("animationend", function() {
+            jQuery(this).removeClass("fade-in");
         });
         jQuery("nav a").removeClass('active');
         jQuery(this).addClass('active');
