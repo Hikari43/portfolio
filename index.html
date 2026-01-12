@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="Cache-Control" content="no-store">
+        <meta name="google" content="notranslate">
         <link rel="stylesheet" href="css/use_all.min.css">
         <link rel="stylesheet" href="css/style.css">
         <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
@@ -27,29 +28,36 @@
         <!-- Twitterカードの設定 -->
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@oh_thinkingtime" />
-        <meta name=”description“ content="
+        <meta name="description" content="
         I am a second-year graduate student in Motomura & Fujuki Lab. at Tokyo Institute of Technology, and I plan to enter a doctoral program there in 2025. 
         My research focuses on model compression, specifically on weak or strong lottery tickets within neural networks.
         " />
         <link rel="apple-touch-icon" sizes="180x180" href="./images/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="./images/favicon-16x16.png">
-<link rel="manifest" href="./images/site.webmanifest">
-<link rel="mask-icon" href="./images/safari-pinned-tab.svg" color="#5bbad5">
-<meta name="msapplication-TileColor" content="#00a300">
-<meta name="theme-color" content="#ffffff">
+        <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon-16x16.png">
+        <link rel="manifest" href="./images/site.webmanifest">
+        <link rel="mask-icon" href="./images/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#00a300">
+        <meta name="theme-color" content="#ffffff">
     </head>
     <body>
+        <!-- SVGノイズフィルター定義 -->
+        <svg style="position: absolute; width: 0; height: 0;">
+            <filter id="noise">
+                <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="4" stitchTiles="stitch"/>
+                <feColorMatrix type="saturate" values="0"/>
+            </filter>
+        </svg>
+        
         <div id="background_container"></div>
         <script src="random_walk.js"></script>
         <div class="sidebar">
+            <div id="logo-container"></div>
+            <script src="logo.js"></script>
             <nav>
                 <ul>
-                    <div id="logo-container"></div>
-                    <script src="logo.js"></script>
                     <li><a id="init_content" href="profile">Profile</a></li>
                     <li><a href="works">Works</a></li>
-                    <!-- <li><a href="contact">Contact</a></li> -->
                 </ul>
             </nav>
         </div>

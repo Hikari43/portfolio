@@ -1,9 +1,12 @@
-<h1>About</h1>
+<h1 id="profile">Hikari Otsuka</h1>
 <h2>
-    I am a 2nd-year graduate student in <a href= "http://www.artic.iir.titech.ac.jp/wp/en/">Motomura & Fujiki Lab.</a> at Tokyo Institute of Technology,
-    and I plan to enter a doctoral program there in 2025. 
-    My research focuses on model compression, specifically on weak or strong lottery tickets within neural networks.
+    I am a first-year Ph.D. student (D1) at the <a href="http://www.artic.iir.titech.ac.jp/wp/en/">Motomura &amp; Fujiki Lab (ArtIC)</a>, Institute of Science Tokyo (formerly Tokyo Institute of Technology).
+    <br>
+    My research focuses on the theoretical aspects of model compression, particularly the Strong Lottery Ticket Hypothesis (SLTH).
+
 </h2>
+
+<hr class="section-divider">
 
 <h1>Degrees</h1>
 <ul>
@@ -27,6 +30,8 @@
     </li>
 </ul>
 
+<hr class="section-divider">
+
 <h1>Contact</h1>
 <h2>
     <i class="fa-brands fa-square-x-twitter"></i>
@@ -40,5 +45,304 @@
 
 <h2>
     <i class="fa-solid fa-envelope"></i>
-    Mail: <span id="mail">otsuka.hikari [at] artic.iir.titech.ac.jp</span>
+    Mail: <span id="mail">otsuka.hikari [at] artic.iir.isct.ac.jp</span>
 </h2>
+
+<hr class="section-divider">
+
+<!-- Works Section -->
+<div id="works">
+<h1>Publications</h1>
+
+<h2>Journal Papers (Refereed)</h2>
+<div id="journal-bib"></div>
+
+<h2>Conference Papers (Refereed)</h2>
+<div id="conference-bib"></div>
+
+<h2>Workshop Papers (Refereed, including non-proceedings)</h2>
+<div id="workshop-bib"></div>
+
+<h2>Non-Refereed Papers</h2>
+<div id="non-refereed-bib"></div>
+
+<h2>Awards</h2>
+<div id="awards-bib"></div>
+
+<h2>Grants</h2>
+<div id="grants-bib"></div>
+
+<h2>Others</h2>
+<div id="others-bib"></div>
+
+<style>
+.bib-entry {
+    margin-bottom: 1.5em;
+    padding-left: 0;
+    text-indent: 0;
+}
+.bib-venue-line {
+    font-style: normal;
+    display: block;
+}
+.bib-title {
+    font-weight: 700;
+    display: block;
+    margin-top: 0.2em;
+}
+.bib-author {
+    font-style: normal;
+    display: block;
+    margin-top: 0.2em;
+}
+.bib-note {
+    font-style: normal;
+    display: block;
+    margin-top: 0.2em;
+}
+.bib-me {
+    text-decoration: underline;
+}
+</style>
+
+<script>
+// 括弧/引用のバランスを考慮してフィールド値を抽出する関数
+function extractBibField(entry, fieldName) {
+    const regex = new RegExp(`(?:^|[,{\\s])${fieldName}\\s*=\\s*`, 'i');
+    const m = regex.exec(entry);
+    if (!m) return null;
+
+    let i = m.index + m[0].length;
+    if (i >= entry.length) return null;
+
+    const opener = entry[i];
+    if (opener === '{') {
+        let depth = 1;
+        let j = i + 1;
+        while (j < entry.length && depth > 0) {
+            const c = entry[j];
+            if (c === '{') depth++;
+            else if (c === '}') depth--;
+            j++;
+        }
+        return entry.slice(i + 1, j - 1);
+    }
+    if (opener === '"') {
+        let j = i + 1;
+        while (j < entry.length) {
+            if (entry[j] === '"' && entry[j - 1] !== '\\') break;
+            j++;
+        }
+        return entry.slice(i + 1, j);
+    }
+    let j = i;
+    while (j < entry.length && entry[j] !== ',' && entry[j] !== '\n') j++;
+    return entry.slice(i, j).trim();
+}
+
+// "Last, First" を "First Last" に変換する関数
+function normalizeAuthorName(name) {
+    name = name.trim();
+    
+    // LaTeX特殊文字をデコード
+    name = name
+        .replace(/\{\\'\s*\\i\s*\}|\{\\'\\i\}|\\'\\i/g, 'í')
+        .replace(/\{\\'([aeiouAEIOU])\}|\\'([aeiouAEIOU])/g, (m, a, b) => {
+            const ch = (a || b);
+            const map = {a:'á',e:'é',i:'í',o:'ó',u:'ú',A:'Á',E:'É',I:'Í',O:'Ó',U:'Ú'};
+            return map[ch] || ch;
+        })
+        .replace(/\{([^{}]*)\}/g, '$1')
+        .replace(/\s+/g, ' ');
+    
+    // "Last, First" 形式を検出して "First Last" に変換
+    const commaMatch = name.match(/^([^,]+),\s*(.+)$/);
+    if (commaMatch) {
+        const lastName = commaMatch[1].trim();
+        const firstName = commaMatch[2].trim();
+        return `${firstName} ${lastName}`;
+    }
+    
+    return name;
+}
+
+// BibTexエントリを解析してHTML形式に変換する関数
+function formatBibEntry(entry, fileType = 'default') {
+    const title = extractBibField(entry, 'title');
+    const author = extractBibField(entry, 'author');
+    const yearMatch = entry.match(/year\s*=\s*\{?(\d{4}(?:-\d{4})?)/);
+    const monthMatch = entry.match(/month\s*=\s*\{?([^,}]+)/);
+    const journal = extractBibField(entry, 'journal');
+    const booktitle = extractBibField(entry, 'booktitle');
+    const url = extractBibField(entry, 'url');
+    const note = extractBibField(entry, 'note');
+    const pages = extractBibField(entry, 'pages');
+    
+    let html = '<div class="bib-entry">';
+    
+    // 1行目: Venue (会議名/論文誌名)
+    let venueLine = '';
+    
+    // Awards/Others/Grantsの特別処理
+    if (fileType === 'awards' || fileType === 'others') {
+        // AwardsとOthersは月と年を表示
+        if (monthMatch && yearMatch) {
+            venueLine = `${monthMatch[1].trim()} ${yearMatch[1]}`;
+        } else if (yearMatch) {
+            venueLine = yearMatch[1];
+        }
+    } else if (fileType === 'grants') {
+        // Grantsは年のみ（カンマなし）
+        if (yearMatch) {
+            venueLine = yearMatch[1];
+        }
+    } else {
+        // 通常の処理
+        if (journal) {
+            venueLine = journal;
+        } else if (booktitle) {
+            venueLine = booktitle;
+        }
+        
+        // Pages（--を-に統一）
+        if (pages) {
+            const normalizedPages = pages.replace(/--/g, '-');
+            venueLine += `, pp.${normalizedPages}`;
+        }
+        
+        if (monthMatch && yearMatch) venueLine += `, ${yearMatch[1]}`;
+        else if (yearMatch) venueLine += `, ${yearMatch[1]}`;
+    }
+    
+    if (url) {
+        // Awards/Othersの場合はURL、それ以外はpaper
+        const linkText = (fileType === 'awards' || fileType === 'others') ? 'URL' : 'paper';
+        venueLine += ` [<a href="${url}" target="_blank">${linkText}</a>]`;
+    }
+    
+    html += `<span class="bib-venue-line">${venueLine}</span>`;
+    
+    // 2行目: タイトル（太字）
+    if (title) {
+        html += `<span class="bib-title">${title}</span>`;
+    }
+    
+    // 3行目: 著者（Hikari Otsukaのみ下線）
+    if (author) {
+        const authorList = author.split(/\s+and\s+/i).map(a => a.trim());
+
+        // 全著者名を "First Last" 形式に統一し、自分の名前に下線
+        const displayAuthors = authorList.map(name => {
+            const normalized = normalizeAuthorName(name);
+            
+            // Hikari Otsukaの判定
+            const isMe = /\bHikari\b\s+\bOtsuka\b/i.test(normalized) || 
+                         /大塚\s*光莉/.test(normalized);
+            
+            if (isMe) {
+                return `<span class="bib-me">Hikari Otsuka</span>`;
+            }
+            return normalized;
+        });
+
+        // "A, B, C, and D" 形式にフォーマット
+        let formattedAuthors;
+        if (displayAuthors.length === 1) {
+            formattedAuthors = displayAuthors[0];
+        } else if (displayAuthors.length === 2) {
+            formattedAuthors = displayAuthors.join(' and ');
+        } else {
+            const last = displayAuthors[displayAuthors.length - 1];
+            const head = displayAuthors.slice(0, -1);
+            formattedAuthors = head.join(', ') + ', and ' + last;
+        }
+        html += `<span class="bib-author">${formattedAuthors}</span>`;
+    }
+    
+    // 4行目: note（名前の次の行に表示）
+    if (note && note.trim()) {
+        html += `<span class="bib-note">${note}</span>`;
+    }
+    
+    html += '</div>';
+    return html;
+}
+
+// BibTexエントリを解析してソートする関数
+function parseBib(bibContent, fileType = 'default') {
+    const entries = [];
+    const entryRegex = /@\w+\{[^@]+(?=@|\s*$)/gs;
+    
+    let match;
+    while ((match = entryRegex.exec(bibContent)) !== null) {
+        const entry = match[0].trim();
+        const yearMatch = entry.match(/year\s*=\s*\{?(\d{4})/);
+        const monthMatch = entry.match(/month\s*=\s*\{?([^,}]+)/);
+        const author = extractBibField(entry, 'author');
+        const authors = author || '';
+        
+        const year = yearMatch ? parseInt(yearMatch[1]) : 0;
+        const month = monthMatch ? monthMatch[1].trim() : '';
+        
+        // Hikari Otsukaの著者順を取得
+        let authorOrder = 999;
+        if (authors) {
+            const authorList = authors.split(' and ');
+            for (let i = 0; i < authorList.length; i++) {
+                const authorName = normalizeAuthorName(authorList[i].trim());
+                if (authorName.includes('Hikari Otsuka') || 
+                    authorName.includes('大塚光莉')) {
+                    authorOrder = i;
+                    break;
+                }
+            }
+        }
+        
+        entries.push({
+            text: entry,
+            year: year,
+            month: month,
+            authorOrder: authorOrder
+        });
+    }
+    
+    // 年月、著者順でソート
+    entries.sort((a, b) => {
+        if (b.year !== a.year) return b.year - a.year;
+        
+        const monthOrder = ['January', 'February', 'March', 'April', 'May', 'June',
+                           'July', 'August', 'September', 'October', 'November', 'December'];
+        const monthA = monthOrder.indexOf(a.month);
+        const monthB = monthOrder.indexOf(b.month);
+        
+        if (monthB !== monthA) return monthB - monthA;
+        
+        return a.authorOrder - b.authorOrder;
+    });
+    
+    return entries.map(e => formatBibEntry(e.text, fileType)).join('');
+}
+
+// BibTex ファイルを読み込んで整形して表示する関数
+async function loadBib(elementId, bibFile, fileType = 'default') {
+    try {
+        const response = await fetch(`contents/works/${bibFile}`);
+        const bibContent = await response.text();
+        const formattedBib = parseBib(bibContent, fileType);
+        document.getElementById(elementId).innerHTML = formattedBib;
+    } catch (error) {
+        console.error(`Error loading ${bibFile}:`, error);
+        document.getElementById(elementId).innerHTML = '<p>Error loading bibliography</p>';
+    }
+}
+
+// ページロード時に各BibTexファイルを読み込む
+loadBib('journal-bib', 'refereed_journal.bib');
+loadBib('conference-bib', 'refereed_conference.bib');
+loadBib('workshop-bib', 'refereed_workshop.bib');
+loadBib('non-refereed-bib', 'non-refereed.bib');
+loadBib('awards-bib', 'awards.bib', 'awards');
+loadBib('grants-bib', 'grants.bib', 'grants');
+loadBib('others-bib', 'others.bib', 'others');
+</script>
+</div>

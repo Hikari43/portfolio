@@ -32,7 +32,7 @@ const logo = function(p){
             canvas =p.createCanvas(200, 200);
             canvas.style('margin',  '1.5%');
         }
-        canvas.position(0, 0);
+        canvas.position(5, 0);
         canvas.style('padding', '0');
         canvas.style('padding-left', '1%');
         draw_count = 0;

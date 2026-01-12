@@ -17,10 +17,27 @@ body{
     overflow: hidden;
     overscroll-behavior: none;
     animation: fadeIn 3s forwards;
+    -webkit-user-select: none;   /* ← 本文以外は選択不可 */
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* ナビ/ロゴ/背景は選択不可のまま */
+.sidebar, #logo-container, #background_container{
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+/* 本文とその中身のみ選択可能（コンテナは不可） */
+#content,
+#content *{
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
 }
 
 body::before {
@@ -35,21 +52,50 @@ body::before {
     background-size: 7px 7px; /* ノイズの細かさを調整 */
     pointer-events: none;
     z-index: -2;
-  }
+}
+
+/* p5.js canvas が右クリックで画像扱いされないようにする */
+canvas {
+        pointer-events: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    z-index: 100;
+}
 
 .sidebar ul{
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;  /* 縦並びに変更 */
+    align-items: flex-start; /* 左寄せ */
     padding: 0;
     margin: 0;
-    margin-top: 8px;
-    margin-right: 8%;
+    margin-top: 210px;       /* ロゴ(200px) + 余白(10px) */
+    margin-left: 20px;       /* 左側の余白 */
+    list-style: none;
 }
 
 .sidebar ul li{
     list-style: none;
     padding: 0;
-    margin: 2%;
+    margin: 6px 0;           /* 上下マージン */
+    position: relative;
+    width: 200px;            /* ロゴの幅に合わせる */
+}
+
+.sidebar ul li::before{
+    content: '・';
+    position: absolute;
+    left: 0;
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
 }
 
 .sidebar ul li a{
@@ -58,16 +104,30 @@ body::before {
     font-optical-sizing: auto;
     font-weight: 500;
     font-style: normal;
-    font-size: large;
-    /* font-family: "Oswald", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 500;
-    font-style: small; */
+    font-size: x-large;
     transition: 0.3s;
+    padding-left: 1.2em;     /* 箇条書き記号の分だけ右にずらす */
+    display: inline-block;
+    position: relative;
 }
 
-.sidebar ul li a:link, a:visited, a:active{
-    /* color: #FFFFFF; */
+/* 下線アニメーション */
+.sidebar ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 1.2em;
+    width: 0;
+    height: 2px;
+    background-color: #000000;
+    transition: width 0.3s ease;
+}
+
+.sidebar ul li a.active::after {
+    width: calc(100% - 1.2em);
+}
+
+.sidebar ul li a:link, .sidebar ul li a:visited, .sidebar ul li a:active{
     color: #000000;
 }
 
@@ -89,8 +149,8 @@ body::before {
 #content-container{
     flex-grow: 1;
     margin-top: 50px;
-    height: calc(100dvh - 175px); 
-    height: calc(100vh - 175px); 
+    height: calc(100vh - 110px);   /* 古いブラウザ用フォールバック */
+    height: calc(100dvh - 110px);  /* 新しいブラウザで上書き */
     /* overflow: hidden; */
     overflow-y: scroll;
     position: relative;
@@ -105,50 +165,78 @@ body::before {
 
 #content{
     color: #000000;
-    margin-right: 6%;
-    margin-left: auto;
-    max-width: 600px;
-    width: 53%;
+    margin-right: 30px;
+    margin-left: 250px;
+    width: calc(100% - 320px);
     display: block;
     text-align: justify;
-    /* overflow-y: auto; */
-    -webkit-hyphens: auto; /* Safari 用 */
-    -moz-hyphens: auto; /* Firefox 用 */
-    -ms-hyphens: auto; /* Internet Explorer 用 */
-    hyphens: auto; /* 標準 */
-    word-break: break-all; /* 長い単語の折り返し */
+    word-break: normal;
+    overflow-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
     font-family: "Raleway", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 250;
+    font-weight: 400;
     font-style: normal;
     font-size: medium;
     position: relative;
-    /* overflow-y: auto;  */
-    box-sizing: border-box; /* パディングを含む全体の高さを調整 */
+    box-sizing: border-box;
 }
 
 #content-border{
-    background-color: #e2e2e2;
+    background-color: #f3f3f3;
     position: absolute;
     top: -2px;
-    right: -20px;
-    margin-right: 6%;
-    margin-left: auto;
-    max-width: 630px;
-    width: calc(53% + 30px);
-    height: calc(100dvh - 171px); 
-    height: calc(100vh - 171px); 
+    left: 230px;
+    margin-right: 30px;
+    width: calc(100% - 275px);
+    height: calc(100vh - 100px);   /* 古いブラウザ用フォールバック */
+    height: calc(100dvh - 100px);  /* 新しいブラウザで上書き */
     display: block;
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
     margin-bottom: 50px; 
     z-index: -1;
+    overflow: hidden;  /* ノイズがはみ出さないように */
+}
+
+/* コンテンツ四角内のグレインノイズ */
+#content-border::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.35;
+    filter: url(#noise);
+    pointer-events: none;
 }
 
 @media screen and (max-width:549px) {
+    .sidebar {
+        padding: 10px;
+    }
+    
+    .sidebar ul{
+        margin-top: 135px;  /* モバイル用: ロゴ(125px) + 余白(10px) */
+        margin-left: 10px;
+    }
+    
+    .sidebar ul li{
+        width: 125px;       /* モバイル用: ロゴの幅に合わせる */
+    }
+    
+    #content{
+        margin-left: 150px;
+        margin-right: 20px;
+        width: calc(100% - 185px);
+    }
+    
     #content-border{
-        right: -15px;
-        margin-right: 6%;
-        width: calc(53% + 20px);
+        left: 135px;
+        width: calc(100% - 155px);
     }
 }
 
@@ -197,6 +285,12 @@ body::before {
     color: #000000;
 }
 
+.section-divider {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 3em 0;
+}
+
 @media (hover: hover) {
     /* hover指定できるPCを想定したスタイル */
         #content a:hover{
@@ -228,6 +322,12 @@ h2{
     font-size: large;
 }
 
+#works h2{
+    font-weight: 700;
+    font-size: x-large;
+    margin-top: 2em;
+}
+
 h3{
     text-decoration: none;
     font-family: "Raleway", sans-serif;
@@ -237,16 +337,10 @@ h3{
     font-size: medium;
 }
 
-#mail{
-    -webkit-user-select: all;
-    -moz-user-select: all;
-    -ms-user-select: all;
-    user-select: all;
-}
-
 @media screen and (max-width:549px) {
     h1{font-size: medium;}
     h2{font-size: small;}
     h3{font-size: x-small;}
     .sidebar ul li a{font-size: medium;}
+    #content{font-size: small;}  /* 本文のフォントサイズを小さく */
 }
