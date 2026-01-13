@@ -319,14 +319,20 @@ function formatBibEntry(entry, fileType = 'default') {
         const displayAuthors = authorList.map(name => {
             const normalized = normalizeAuthorName(name);
             
+            // *マークがあるか確認（equal contribution）
+            const hasAsterisk = name.includes('*') || normalized.includes('*');
+            // *を除いた名前で判定
+            const cleanName = normalized.replace(/\*/g, '').trim();
+            
             // Hikari Otsukaの判定
-            const isMe = /\bHikari\b\s+\bOtsuka\b/i.test(normalized) || 
-                         /大塚\s*光莉/.test(normalized);
+            const isMe = /\bHikari\b\s+\bOtsuka\b/i.test(cleanName) || 
+                         /大塚\s*光莉/.test(cleanName);
             
             if (isMe) {
-                return `<span class="bib-me">Hikari Otsuka</span>`;
+                return `<span class="bib-me">Hikari Otsuka</span>${hasAsterisk ? '*' : ''}`;
             }
-            return normalized;
+            // 他の著者も*を保持
+            return hasAsterisk ? cleanName + '*' : normalized;
         });
 
         // "A, B, C, and D" 形式にフォーマット
