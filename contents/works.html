@@ -42,9 +42,88 @@
 .bib-me {
     text-decoration: underline;
 }
+.bib-badge {
+    display: inline-block;
+    padding: 0.15em 0.5em;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: 600;
+    margin-left: 0.3em;
+}
+.bib-badge-spotlight {
+    background: linear-gradient(135deg, #ffd700, #ffb700);
+    color: #5a4a00;
+}
+.bib-badge-oral {
+    background: linear-gradient(135deg, #4a90d9, #2e6bb0);
+    color: #fff;
+}
+.bib-badge-best-paper {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: #fff;
+}
+.bib-badge-honorable {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    color: #fff;
+}
+.bib-badge-default {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: #fff;
+}
 </style>
 
 <script>
+// noteをバッジ形式に変換する関数
+function formatNoteBadge(note) {
+    if (!note || !note.trim()) return '';
+    const noteText = note.trim();
+    const lowerNote = noteText.toLowerCase();
+    
+    let badgeClass = 'bib-badge-default';
+    if (lowerNote.includes('spotlight')) {
+        badgeClass = 'bib-badge-spotlight';
+    } else if (lowerNote.includes('oral')) {
+        badgeClass = 'bib-badge-oral';
+    } else if (lowerNote.includes('best paper') || lowerNote.includes('best-paper')) {
+        badgeClass = 'bib-badge-best-paper';
+    } else if (lowerNote.includes('honorable') || lowerNote.includes('runner')) {
+        badgeClass = 'bib-badge-honorable';
+    }
+    
+    return `<span class="bib-badge ${badgeClass}">${noteText}</span>`;
+}
+
+// LaTeX記法をデコードする関数
+function decodeLatex(text) {
+    if (!text) return text;
+    return text
+        // アクセント記号の処理
+        .replace(/\{\\'\s*\\i\s*\}|\{\\'\\i\}|\\'\\i/g, 'í')
+        .replace(/\{\\'([aeiouAEIOUnN])\}|\\'([aeiouAEIOUnN])/g, (m, a, b) => {
+            const ch = (a || b);
+            const map = {a:'á',e:'é',i:'í',o:'ó',u:'ú',n:'ń',A:'Á',E:'É',I:'Í',O:'Ó',U:'Ú',N:'Ń'};
+            return map[ch] || ch;
+        })
+        .replace(/\\`([aeiouAEIOU])/g, (m, ch) => {
+            const map = {a:'à',e:'è',i:'ì',o:'ò',u:'ù',A:'À',E:'È',I:'Ì',O:'Ò',U:'Ù'};
+            return map[ch] || ch;
+        })
+        .replace(/\\"([aeiouAEIOU])/g, (m, ch) => {
+            const map = {a:'ä',e:'ë',i:'ï',o:'ö',u:'ü',A:'Ä',E:'Ë',I:'Ï',O:'Ö',U:'Ü'};
+            return map[ch] || ch;
+        })
+        .replace(/\\~([nNoO])/g, (m, ch) => {
+            const map = {n:'ñ',N:'Ñ',o:'õ',O:'Õ'};
+            return map[ch] || ch;
+        })
+        .replace(/\\c\{([cC])\}/g, (m, ch) => ch === 'c' ? 'ç' : 'Ç')
+        // 大文字保持用の波括弧を除去（中身は保持）
+        .replace(/\{([^{}]*)\}/g, '$1')
+        // 複数スペースを1つに
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
 // 括弧/引用のバランスを考慮してフィールド値を抽出する関数
 function extractBibField(entry, fieldName) {
     const regex = new RegExp(`(?:^|[,{\\s])${fieldName}\\s*=\\s*`, 'i');
@@ -107,14 +186,14 @@ function normalizeAuthorName(name) {
 
 // BibTexエントリを解析してHTML形式に変換する関数
 function formatBibEntry(entry) {
-    const title = extractBibField(entry, 'title');
+    const title = decodeLatex(extractBibField(entry, 'title'));
     const author = extractBibField(entry, 'author');
     const yearMatch = entry.match(/year\s*=\s*\{?(\d{4}(?:-\d{4})?)/);
     const monthMatch = entry.match(/month\s*=\s*\{?([^,}]+)/);
-    const journal = extractBibField(entry, 'journal');
-    const booktitle = extractBibField(entry, 'booktitle');
+    const journal = decodeLatex(extractBibField(entry, 'journal'));
+    const booktitle = decodeLatex(extractBibField(entry, 'booktitle'));
     const url = extractBibField(entry, 'url');
-    const note = extractBibField(entry, 'note');
+    const note = decodeLatex(extractBibField(entry, 'note'));
     const pages = extractBibField(entry, 'pages');
     
     let html = '<div class="bib-entry">';
@@ -136,10 +215,13 @@ function formatBibEntry(entry) {
     if (monthMatch && yearMatch) venueLine += `, ${yearMatch[1]}`;
     else if (yearMatch) venueLine += `, ${yearMatch[1]}`;
     
-    if (note && note.trim()) venueLine += ` [${note}]`;
-    
     if (url) {
         venueLine += ` [<a href="${url}" target="_blank">paper</a>]`;
+    }
+    
+    // noteがあればバッジとして表示
+    if (note && note.trim()) {
+        venueLine += ` ${formatNoteBadge(note)}`;
     }
     
     html += `<span class="bib-venue-line">${venueLine}</span>`;
